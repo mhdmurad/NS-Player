@@ -1,5 +1,5 @@
 const API =
-"https://raw.githubusercontent.com/mhdmurad78/NS-Player/main/toffee_data.json";
+"https://raw.githubusercontent.com/mhdmurad/NS-Player/refs/heads/main/toffee_data.json";
 
 fetch(API)
 .then(r => r.json())
