@@ -4,11 +4,14 @@ const search = document.getElementById("search");
 let channels = [];
 
 fetch("toffee_data.json")
-  .then(res => res.json())
-  .then(data => {
-    channels = data;
+.then(res => res.json())
+.then(data => {
+
+    channels = data.response;   // <-- এটাই পরিবর্তন
+
     showChannels(channels);
-  });
+
+});
 
 function showChannels(list){
 
@@ -18,11 +21,9 @@ list.forEach((ch,index)=>{
 
 container.innerHTML += `
 
-<div class="card"
-onclick="openPlayer(${index})">
+<div class="card" onclick="openPlayer(${index})">
 
-<img src="${ch.logo}"
-onerror="this.src='https://placehold.co/150x150?text=TV'">
+<img src="${ch.logo}" alt="${ch.name}">
 
 <h3>${ch.name}</h3>
 
@@ -34,11 +35,15 @@ onerror="this.src='https://placehold.co/150x150?text=TV'">
 
 }
 
-search.addEventListener("input",()=>{
+search.addEventListener("keyup",()=>{
 
-let value = search.value.toLowerCase();
+const value=search.value.toLowerCase();
 
-let result = channels.filter(c=>c.name.toLowerCase().includes(value));
+const result=channels.filter(item=>
+
+item.name.toLowerCase().includes(value)
+
+);
 
 showChannels(result);
 
@@ -46,6 +51,8 @@ showChannels(result);
 
 function openPlayer(index){
 
-location.href="player.html?id="+index;
+localStorage.setItem("channel",JSON.stringify(channels[index]));
+
+window.location="player.html";
 
 }
