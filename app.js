@@ -1,13 +1,15 @@
 const container = document.getElementById("channels");
 const search = document.getElementById("search");
 
+const WORKER = "https://young-river-6627.mhdmurad78.workers.dev";
+
 let channels = [];
 
-fetch("toffee_data.json")
+fetch("https://raw.githubusercontent.com/sm-monirulislam/Toffee-Auto-Update-Playlist/main/toffee_data.json")
 .then(res => res.json())
 .then(data => {
 
-    channels = data.response;   // <-- এটাই পরিবর্তন
+    channels = data.response;
 
     showChannels(channels);
 
@@ -15,44 +17,45 @@ fetch("toffee_data.json")
 
 function showChannels(list){
 
-container.innerHTML="";
+    container.innerHTML = "";
 
-list.forEach((ch,index)=>{
+    list.forEach(ch=>{
 
-container.innerHTML += `
+        const index = channels.indexOf(ch);
 
-<div class="card" onclick="openPlayer(${index})">
+        container.innerHTML += `
 
-<img src="${ch.logo}" alt="${ch.name}">
+        <div class="card" onclick="play(${index})">
 
-<h3>${ch.name}</h3>
+            <img src="${ch.logo}" loading="lazy">
 
-</div>
+            <h3>${ch.name}</h3>
 
-`;
+        </div>
 
-});
+        `;
+
+    });
 
 }
 
 search.addEventListener("keyup",()=>{
 
-const value=search.value.toLowerCase();
+    const value = search.value.toLowerCase();
 
-const result=channels.filter(item=>
+    const result = channels.filter(item=>
 
-item.name.toLowerCase().includes(value)
+        item.name.toLowerCase().includes(value)
 
-);
+    );
 
-showChannels(result);
+    showChannels(result);
 
 });
 
-function openPlayer(index){
+function play(id){
 
-localStorage.setItem("channel",JSON.stringify(channels[index]));
-
-window.location="player.html";
+    window.location =
+    "player.html?id=" + id;
 
 }
